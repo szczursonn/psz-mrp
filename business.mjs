@@ -62,6 +62,21 @@ export class MRP {
                 }
             }
         }
+
+        // move production forward so it starts as late as possible
+        for (let i = periods.length - 1; i >= 0; i--) {
+            if (periods[i].plannedOrdersIntake > 0) {
+                for (let j = i; j < periods.length - 1 && periods[j].expectedStock - periods[j].plannedOrdersIntake >= 0; j++) {
+                    periods[j + 1].plannedOrdersIntake = periods[j].plannedOrdersIntake
+                    periods[j - this.makeTime + 1].plannedOrders = periods[j - this.makeTime].plannedOrders
+
+                    periods[j].expectedStock -= periods[j].plannedOrdersIntake
+                    periods[j].plannedOrdersIntake = 0
+                    periods[j - this.makeTime].plannedOrders = 0
+                }
+            }
+        }
+
         return periods
     }
 }
