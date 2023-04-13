@@ -25,7 +25,7 @@ class ResultsMRPTable extends HTMLElement {
 
         this.querySelector('h3').textContent = mrp.name
         this.querySelector('h5').textContent = `${LABELS.BOM_LEVEL}: ${mrp.bomLevel}`
-        this.querySelector('h6').textContent = `${LABELS.MAKE_TIME}: ${mrp.makeTime}, ${LABELS.IN_STOCK}: ${mrp.result[0].expectedStock}, ${LABELS.MULTIPLIER}: ${mrp.demandMultiplier}, ${LABELS.BATCH_SIZE}: ${mrp.batchSize}, ${LABELS.PART_OF} ${mrp.parentName}`
+        this.querySelector('h6').textContent = `${LABELS.MAKE_TIME}: ${mrp.makeTime}, ${LABELS.IN_STOCK}: ${mrp.initialStock}, ${LABELS.MULTIPLIER}: ${mrp.demandMultiplier}, ${LABELS.BATCH_SIZE}: ${mrp.batchSize}, ${LABELS.PART_OF} ${mrp.parentName}`
 
         for (let i = 0; i < mrp.result.length; i++) {
             createElement('th', {
@@ -55,6 +55,7 @@ class ResultsMRPTable extends HTMLElement {
                         scope: 'row'
                     },
                     textContent: period[field],
+                    style: ((field === 'plannedImports' && period[field] > 0) || field === 'expectedStock' && period[field] < 0) ? 'color: red; font-weight: bold;' : undefined,
                     parent: row
                 })
             }

@@ -18,7 +18,8 @@ class App extends HTMLElement {
 
             <input-form></input-form>
 
-            <button class="test-button">TEST</button>
+            <button class="test-button">TEST - no import</button>
+            <button class="test-button-2">TEST - import</button>
 
             <footer class="d-flex justify-content-center">
                 <a class="opacity-75 mt-3 d-flex justify-content-center" href="${REPO_URL}">
@@ -34,9 +35,15 @@ class App extends HTMLElement {
         this.querySelector('button.test-button').addEventListener('click', () => {
             this.makeCalculations(TEST_PARAMS)
         })
+        this.querySelector('button.test-button-2').addEventListener('click', () => {
+            this.makeCalculations({
+                ...TEST_PARAMS,
+                allowImport: true
+            })
+        })
     }
 
-    makeCalculations({ ghp, mrps }) {
+    makeCalculations({ ghp, mrps, allowImport }) {
         const shiftedGHPProduction = [...ghp.production]
         for (let i = 0; i < ghp.makeTime; i++) {
             shiftedGHPProduction.shift()
@@ -50,7 +57,7 @@ class App extends HTMLElement {
             const children = mrps.filter((mrpParams) => mrpParams.parent === parentId)
 
             for (const child of children) {
-                const res = new MRP(child).calculate(mrpIdToDemandTableMap.get(parentId))
+                const res = new MRP(child).calculate(mrpIdToDemandTableMap.get(parentId), allowImport)
 
                 parents.push([child.id, bomLevel + 1, child.name])
                 mrpIdToDemandTableMap.set(child.id, res.map((mrp) => mrp.plannedOrders))

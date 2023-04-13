@@ -6,6 +6,7 @@ class ResultsGHPTable extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <h3>GHP</h3>
+            <h6></h6>
             <table class="table table-bordered border-dark">
                 <thead class="table-dark">
                     <tr>
@@ -29,6 +30,7 @@ class ResultsGHPTable extends HTMLElement {
 
     fill(ghp) {
         this.querySelector('h3').textContent = ghp.name + ' (GHP)'
+        this.querySelector('h6').textContent = `${LABELS.MAKE_TIME}: ${ghp.makeTime}, ${LABELS.IN_STOCK}: ${ghp.stock}`
 
         let lastAvailable
         for (let i = 0; i < ghp.demand.length; i++) {

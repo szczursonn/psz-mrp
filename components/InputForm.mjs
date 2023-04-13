@@ -21,6 +21,10 @@ class InputForm extends HTMLElement {
                     </span>
                     <div class="row mrp-container"></div>
                     <hr />
+                    <div class="d-flex justify-content-center">
+                        <input type="checkbox" class="allow-imports-btn form-check-input">
+                        <label class="form-check-label ms-1">${LABELS.ALLOW_IMPORTS}</label>
+                    </div>
                     <div class="d-grid gap-2">
                         <button class="btn btn-primary mt-1" type="submit">${LABELS.CALCULATE}</button>
                     </div>
@@ -75,6 +79,7 @@ class InputForm extends HTMLElement {
 
         const ghp = this.querySelector('form input-form-ghp').data
         const mrps = Array.from(this.querySelectorAll('form input-form-mrp')).map((el) => el.data)
+        const allowImport = this.querySelector('input.allow-imports-btn').checked;
 
         // TODO: validation
 
@@ -82,7 +87,8 @@ class InputForm extends HTMLElement {
             bubbles: true,
             detail: {
                 ghp,
-                mrps
+                mrps,
+                allowImport
             }
         }))
     }

@@ -7,7 +7,7 @@ export class MRP {
         this.batchSize = batchSize
     }
 
-    calculate(demandTable) {
+    calculate(demandTable, allowImport) {
         /*
             {
                 fullDemand: int,
@@ -44,8 +44,12 @@ export class MRP {
                 while (currentPeriod.expectedStock < 0) {
                     if (productionStartPtr + this.makeTime > i) {
                         // production would end after current period, must import
-                        currentPeriod.plannedImports = -currentPeriod.expectedStock
-                        currentPeriod.expectedStock = 0
+                        if (allowImport) {
+                            currentPeriod.plannedImports = -currentPeriod.expectedStock
+                            currentPeriod.expectedStock = 0
+                        } else {
+                            break
+                        }
                     } else {
                         // schedule production
                         let productionEndPtr = productionStartPtr + this.makeTime
@@ -66,16 +70,23 @@ export class MRP {
         // move production forward so it starts as late as possible
         for (let i = periods.length - 1; i >= 0; i--) {
             if (periods[i].plannedOrdersIntake > 0) {
-                for (let j = i; j < periods.length - 1 && periods[j].expectedStock - periods[j].plannedOrdersIntake >= 0; j++) {
-                    periods[j + 1].plannedOrdersIntake = periods[j].plannedOrdersIntake
-                    periods[j - this.makeTime + 1].plannedOrders = periods[j - this.makeTime].plannedOrders
+                for (let j = i; j < periods.length - 2; j++) {
+                    if (periods[j].expectedStock - periods[j].plannedOrdersIntake >= 0 && periods[j].plannedOrders == 0) {
+                        periods[j].expectedStock -= periods[j].plannedOrdersIntake
 
-                    periods[j].expectedStock -= periods[j].plannedOrdersIntake
-                    periods[j].plannedOrdersIntake = 0
-                    periods[j - this.makeTime].plannedOrders = 0
+                        periods[j + 1].plannedOrdersIntake = periods[j].plannedOrdersIntake
+                        periods[j].plannedOrdersIntake = 0
+
+                        periods[j - this.makeTime + 1].plannedOrders = periods[j - this.makeTime].plannedOrders
+                        periods[j - this.makeTime].plannedOrders = 0
+                    } else {
+                        break
+                    }
                 }
             }
         }
+
+
 
         return periods
     }

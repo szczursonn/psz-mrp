@@ -5,7 +5,7 @@ import "./ResultsMRPTable.mjs"
 class Results extends HTMLElement {
     static TAG = 'mrp-results'
 
-    shouldShowZeroes = true
+    shouldShowZeroes = false
 
     connectedCallback() {
         this.clear()

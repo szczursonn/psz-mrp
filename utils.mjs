@@ -43,7 +43,8 @@ export const LABELS = {
     PLANNED_ORDERS_INTAKE: 'Planowane przyjęcie zamówień',
     BACK: 'Powrót',
     INPUT_FORM_TITLE: 'Wprowadź dane',
-    HIDE_ZEROES: 'Ukryj zera'
+    HIDE_ZEROES: 'Ukryj zera',
+    ALLOW_IMPORTS: 'Uzupełnij planowanie przyjęcia'
 }
 
 export const TEST_PARAMS = {
@@ -78,7 +79,8 @@ export const TEST_PARAMS = {
         demandMultiplier: 4,
         parent: 'GHP',
         id: '2'
-    }]
+    }],
+    allowImport: false
 }
 
 export const REPO_URL = 'https://github.com/szczursonn/psz-mrp'
