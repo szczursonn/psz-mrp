@@ -50,6 +50,7 @@ class InputFormGHP extends HTMLElement {
                     </tbody>
                 </table>
             </div>
+            <p style="display: none;" class="fw-bold text-warning mt-2 ghp-production-ignored-warning">⚠️ ${LABELS.IGNORED_PRODUCTION_WARNING}</p>
         `
 
         for (let i = 0; i < InputFormGHP.DEFAULT_PERIOD_AMOUNT; i++) {
@@ -60,6 +61,7 @@ class InputFormGHP extends HTMLElement {
         this.querySelector('thead button[x-btn-type="add-period"]').addEventListener('click', this.addPeriod.bind(this))
         this.querySelector('thead button[x-btn-type="remove-period"]').addEventListener('click', this.removePeriod.bind(this))
         this.querySelector('input[x-field="stock"]').addEventListener('change', this.updateAvailableRow.bind(this))
+        this.querySelector('input[x-field="maketime"]').addEventListener('change', this.updateProductionIgnoredWarning.bind(this))
     }
 
     get data() {
@@ -123,6 +125,7 @@ class InputFormGHP extends HTMLElement {
 
         demandInputEl.addEventListener('change', this.updateAvailableRow.bind(this))
         productionInputEl.addEventListener('change', this.updateAvailableRow.bind(this))
+        productionInputEl.addEventListener('change', this.updateProductionIgnoredWarning.bind(this))
     }
 
     removePeriod() {
@@ -144,6 +147,26 @@ class InputFormGHP extends HTMLElement {
         for (let i = 0; i < cells.length; i++) {
             cells[i].textContent = (i === 0 ? data.stock : parseInt(cells[i - 1].textContent)) - data.demand[i] + data.production[i]
         }
+    }
+
+    updateProductionIgnoredWarning() {
+        const warningEl = this.querySelector('.ghp-production-ignored-warning')
+        const makeTime = this.querySelector('input[x-field="maketime"]').valueAsNumber
+
+        if (isNaN(makeTime)) {
+            return
+        }
+
+        const ignoredProductionInputs = Array.from(this.querySelectorAll('tbody tr[x-row-type="production"] input')).splice(0, makeTime)
+
+        for (const inputEl of ignoredProductionInputs) {
+            if (!isNaN(inputEl.valueAsNumber) && inputEl.valueAsNumber !== 0) {
+                warningEl.style.display = 'block'
+                return
+            }
+        }
+
+        warningEl.style.display = 'none'
     }
 }
 

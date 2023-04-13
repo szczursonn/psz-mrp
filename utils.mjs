@@ -44,6 +44,7 @@ export const LABELS = {
     BACK: 'Powrót',
     INPUT_FORM_TITLE: 'Wprowadź dane',
     HIDE_ZEROES: 'Ukryj zera',
+    IGNORED_PRODUCTION_WARNING: 'Uwaga: Wprowadzona produkcja musiałaby zacząć się przed pierwszym okresem. Zostanie ona zignorowana.',
     ALLOW_IMPORTS: 'Uzupełnij planowanie przyjęcia'
 }
 
