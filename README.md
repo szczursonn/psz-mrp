@@ -20,3 +20,10 @@ Rekomendowana opcja do developmentu: Live Server
 2. Zainstaluj dodatek [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 3. Włącz serwer przyciskiem `Go Live` w dolnym prawym rogu VS Code
 4. Strona automatycznie przeładowywuje się po zmianach w plikach
+
+### Opcja nr 2
+
+Wymaga Node.js
+
+1. Odpal terminal w folderze projektu
+2. `npx serve`
